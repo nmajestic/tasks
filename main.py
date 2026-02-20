@@ -22,7 +22,7 @@ def mainloop():
             case "d":
                 task_name = input("Type the name of the task to delete: ")
                 for task in tasks:
-                    if task.name == task_name:
+                    if task.name.lower() == task_name.lower():
                         tasks.remove(task)
                 pass
             case "l":
