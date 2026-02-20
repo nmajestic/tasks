@@ -37,11 +37,13 @@ def greeting():
 
 def main():
     greeting()
-    greeting_prompt = input("Type 'continue' to start or 'exit' to exit: ")
-    if greeting_prompt == "continue":
-        mainloop()
-    if greeting_prompt == "exit":
-        exit()
+    option_selected = input("Type 'continue' to start or 'exit' to exit: ")
+
+    match option_selected:
+        case "continue":
+            mainloop()
+        case "exit":
+            exit()
 
 if __name__ == "__main__":
     main()
