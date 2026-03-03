@@ -13,5 +13,6 @@ def display_actions():
     print("Complete Task: c")
     print("List Tasks: l")
     print("Load Tasks: g")
+    print("Save Tasks: s")
     print("Quit: q")
     print("------------------")

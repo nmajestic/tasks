@@ -45,10 +45,15 @@ def start():
                             new_task = TaskItem(**info)
                             store.add_task(new_task)
                         print("Tasks loaded.")
-                except FileNotFoundError:
+                except (FileNotFoundError, json.JSONDecodeError):
                     with open("data.json", "w") as file:
                         json.dump(store_dict, file, indent=4)
                         print("File not found. Creating new data file...")
+            case "s":
+                for task in store.get_tasks():
+                    store_dict[task.name] = asdict(task)
+                with open("data.json", "w") as file:
+                    json.dump(store_dict, file, indent=4)
             case "q":
                 for task in store.get_tasks():
                     store_dict[task.name] = asdict(task)
