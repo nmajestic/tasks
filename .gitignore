@@ -169,3 +169,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Task storage data
+data.json

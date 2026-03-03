@@ -12,5 +12,6 @@ def display_actions():
     print("Delete Task: d")
     print("Complete Task: c")
     print("List Tasks: l")
+    print("Load Tasks: g")
     print("Quit: q")
     print("------------------")
