@@ -1,11 +1,12 @@
 # Tasks
 
 ## Goal of the project
-### I made this tiny project to demonstrate to myself an understanding of basic Python.
+This is a very tiny terminal task application built using uv(package manager) and pure python. This project will evolve over time as I become more familiar with more programming concepts.
 
 ## How to run Tasks
-### Use uv run main.py
-### main.py is the entrypoint for the application.
+Use uv run main.py 
+
+main.py is the entrypoint for the application.
 
 ## Requirements
-### Python version: 3.14 or newer
+Python version: 3.14 or newer
