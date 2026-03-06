@@ -6,6 +6,7 @@ This is a very tiny terminal task application built using uv(package manager) an
 ## Current features
 - Adding a task name, description, and priority
 - Due dates and overdue notifications are implemented
+- Tasks are now sorted by default by priority
 - Removing a task
 - Marking a task as completed
 - Listing all tasks
