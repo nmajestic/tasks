@@ -24,22 +24,20 @@ def start():
             case "a":
                 name = input("Enter task name: ")
                 description = input("Enter task description: ")
-                priority_selected = input("Enter task priority(low, medium, high): ")
+                priority_selected = ""
+                priority = Priority.MEDIUM
                 while priority_selected not in Priority:
                     priority_selected = input("Enter task priority(low, medium, high): ")
                     match priority_selected:
                         case "low":
-                            completed = False
-                            task = TaskItem(name, description, completed, Priority.LOW)
-                            store.add_task(task)
+                            priority = Priority.LOW
                         case "medium":
-                            completed = False
-                            task = TaskItem(name, description, completed, Priority.MEDIUM)
-                            store.add_task(task)
+                            priority = Priority.MEDIUM
                         case "high":
-                            completed = False
-                            task = TaskItem(name, description, completed, Priority.HIGH)
-                            store.add_task(task)
+                            priority = Priority.HIGH
+                completed = False
+                task = TaskItem(name, description, completed, priority)
+                store.add_task(task)
                 clear()
             case "d":
                 name = input("Enter task name: ")
