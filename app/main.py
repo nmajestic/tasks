@@ -1,8 +1,10 @@
 import sys
 import json
 from dataclasses import asdict
+from unittest import case
 
 from app.display.renderer import display_startup, display_actions
+from app.models.priority import Priority
 from app.models.task_item import TaskItem
 from app.store.task_store import TaskStore
 from app.util.platform_utils import clear
@@ -22,9 +24,22 @@ def start():
             case "a":
                 name = input("Enter task name: ")
                 description = input("Enter task description: ")
-                completed = False
-                task = TaskItem(name, description, completed)
-                store.add_task(task)
+                priority_selected = input("Enter task priority(low, medium, high): ")
+                while priority_selected not in Priority:
+                    priority_selected = input("Enter task priority(low, medium, high): ")
+                    match priority_selected:
+                        case "low":
+                            completed = False
+                            task = TaskItem(name, description, completed, Priority.LOW)
+                            store.add_task(task)
+                        case "medium":
+                            completed = False
+                            task = TaskItem(name, description, completed, Priority.MEDIUM)
+                            store.add_task(task)
+                        case "high":
+                            completed = False
+                            task = TaskItem(name, description, completed, Priority.HIGH)
+                            store.add_task(task)
                 clear()
             case "d":
                 name = input("Enter task name: ")
@@ -36,7 +51,7 @@ def start():
                 clear()
             case "l":
                 for task in store.get_tasks():
-                    print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed}")
+                    print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority}")
             case "g":
                 try:
                     with open("data.json", "r") as file:
