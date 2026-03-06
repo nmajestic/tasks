@@ -1,3 +1,5 @@
+import datetime
+
 from app.config.config import APP_NAME, APP_VERSION
 
 def display_startup():
@@ -16,3 +18,11 @@ def display_actions():
     print("Save Tasks: s")
     print("Quit: q")
     print("------------------")
+
+def display_tasks(sorted_tasks):
+        for task in sorted_tasks:
+            print(
+                f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority} | Due Date: {task.due_date}")
+        for task in sorted_tasks:
+            if task.due_date < datetime.date.today():
+                print(f"OVERDUE TASK: {task.name} | Due Date: {task.due_date}")

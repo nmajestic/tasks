@@ -4,7 +4,7 @@ import json
 from dataclasses import asdict
 from unittest import case
 
-from app.display.renderer import display_startup, display_actions
+from app.display.renderer import display_startup, display_actions, display_tasks
 from app.models.priority import Priority
 from app.models.task_item import TaskItem
 from app.store.task_store import TaskStore
@@ -59,35 +59,10 @@ def start():
                 store.complete_task(name)
                 clear()
             case "l":
-
-                sorted_task_priorities = sorted(store.get_tasks(), key=lambda l_task: l_task.priority.get_priority_order())
-
-                for task in sorted_task_priorities:
-                    print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority} | Due Date: {task.due_date}")
-                for task in sorted_task_priorities:
-                    if task.due_date < datetime.date.today():
-                        print(f"OVERDUE TASK: {task.name} | Due Date: {task.due_date}")
+                display_tasks(store.get_tasks())
             case "g":
-                store.clear_tasks()
-                try:
-                    with open("data.json", "r") as file:
-                        raw_data = json.load(file)
-                        for info in raw_data.values():
-                            new_task = TaskItem(**info)
-                            new_task.priority = Priority(info["priority"])
-                            new_task.due_date = datetime.datetime.strptime(info["due_date"], "%Y-%m-%d").date()
-                            store.add_task(new_task)
-                        print("Tasks loaded.")
-                except (FileNotFoundError, json.JSONDecodeError):
-                    with open("data.json", "w") as file:
-                        json.dump(store_dict, file, indent=4)
-                        print("File not found. Creating new data file...")
+                store.load()
             case "s":
-                for task in store.get_tasks():
-                    task_dict = asdict(task)
-                    task_dict["due_date"] = task.due_date.strftime("%Y-%m-%d")
-                    store_dict[task.name] = task_dict
-                with open("data.json", "w") as file:
-                    json.dump(store_dict, file, indent=4)
+                store.save()
             case "q":
                 sys.exit(0)
