@@ -1,3 +1,4 @@
+import datetime
 import sys
 import json
 from dataclasses import asdict
@@ -26,6 +27,7 @@ def start():
                 description = input("Enter task description: ")
                 priority_selected = ""
                 priority = Priority.MEDIUM
+
                 while priority_selected not in Priority:
                     priority_selected = input("Enter task priority(low, medium, high): ")
                     match priority_selected:
@@ -35,8 +37,17 @@ def start():
                             priority = Priority.MEDIUM
                         case "high":
                             priority = Priority.HIGH
+
+                while True:
+                    try:
+                        date_selected = input("Enter task date(YYYY-MM-DD): ")
+                        due_date = datetime.datetime.strptime(date_selected, "%Y-%m-%d").date()
+                        break
+                    except ValueError:
+                        print("Invalid date. Try again.")\
+
                 completed = False
-                task = TaskItem(name, description, completed, priority)
+                task = TaskItem(name, description, completed, priority, due_date)
                 store.add_task(task)
                 clear()
             case "d":
@@ -49,13 +60,16 @@ def start():
                 clear()
             case "l":
                 for task in store.get_tasks():
-                    print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority}")
+                    print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority} | Due Date: {task.due_date}")
+                    if task.due_date < datetime.date.today():
+                        print(f"OVERDUE TASK: {task.name} | Due Date: {task.due_date}")
             case "g":
                 try:
                     with open("data.json", "r") as file:
                         raw_data = json.load(file)
                         for info in raw_data.values():
                             new_task = TaskItem(**info)
+                            new_task.due_date = datetime.datetime.strptime(info["due_date"], "%Y-%m-%d").date()
                             store.add_task(new_task)
                         print("Tasks loaded.")
                 except (FileNotFoundError, json.JSONDecodeError):
@@ -64,12 +78,10 @@ def start():
                         print("File not found. Creating new data file...")
             case "s":
                 for task in store.get_tasks():
-                    store_dict[task.name] = asdict(task)
+                    task_dict = asdict(task)
+                    task_dict["due_date"] = task.due_date.strftime("%Y-%m-%d")
+                    store_dict[task.name] = task_dict
                 with open("data.json", "w") as file:
                     json.dump(store_dict, file, indent=4)
             case "q":
-                for task in store.get_tasks():
-                    store_dict[task.name] = asdict(task)
-                with open("data.json", "w") as file:
-                    json.dump(store_dict, file, indent=4)
                 sys.exit(0)
