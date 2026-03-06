@@ -59,16 +59,22 @@ def start():
                 store.complete_task(name)
                 clear()
             case "l":
-                for task in store.get_tasks():
+
+                sorted_task_priorities = sorted(store.get_tasks(), key=lambda l_task: l_task.priority.get_priority_order())
+
+                for task in sorted_task_priorities:
                     print(f"Task: {task.name} | Description: {task.description} | Completion Status: {task.completed} | Priority: {task.priority} | Due Date: {task.due_date}")
+                for task in sorted_task_priorities:
                     if task.due_date < datetime.date.today():
                         print(f"OVERDUE TASK: {task.name} | Due Date: {task.due_date}")
             case "g":
+                store.clear_tasks()
                 try:
                     with open("data.json", "r") as file:
                         raw_data = json.load(file)
                         for info in raw_data.values():
                             new_task = TaskItem(**info)
+                            new_task.priority = Priority(info["priority"])
                             new_task.due_date = datetime.datetime.strptime(info["due_date"], "%Y-%m-%d").date()
                             store.add_task(new_task)
                         print("Tasks loaded.")

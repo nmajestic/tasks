@@ -19,3 +19,6 @@ class TaskStore:
 
     def get_tasks(self):
         return self.__tasks
+
+    def clear_tasks(self):
+        self.__tasks.clear()
