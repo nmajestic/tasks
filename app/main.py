@@ -1,8 +1,5 @@
 import datetime
 import sys
-import json
-from dataclasses import asdict
-from unittest import case
 
 from app.display.renderer import display_startup, display_actions, display_tasks
 from app.models.priority import Priority
@@ -12,8 +9,6 @@ from app.util.platform_utils import clear
 
 def start():
     store = TaskStore()
-    store_dict = dict()
-
     display_startup()
 
     while True:
