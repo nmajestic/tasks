@@ -5,6 +5,7 @@ from dataclasses import asdict
 from app.models.priority import Priority
 from app.models.task_item import TaskItem
 
+
 class TaskStore:
     def __init__(self):
         self.__tasks = []
@@ -23,7 +24,9 @@ class TaskStore:
                 task.completed = True
 
     def get_tasks(self):
-        sorted_tasks = sorted(self.__tasks, key=lambda l_task: l_task.priority.get_priority_order())
+        sorted_tasks = sorted(
+            self.__tasks, key=lambda l_task: l_task.priority.get_priority_order()
+        )
         return sorted_tasks
 
     def clear_tasks(self):
@@ -46,10 +49,12 @@ class TaskStore:
                 for info in raw_data.values():
                     new_task = TaskItem(**info)
                     new_task.priority = Priority(info["priority"])
-                    new_task.due_date = datetime.datetime.strptime(info["due_date"], "%Y-%m-%d").date()
+                    new_task.due_date = datetime.datetime.strptime(
+                        info["due_date"], "%Y-%m-%d"
+                    ).date()
                     self.add_task(new_task)
                 print("Tasks loaded.")
-        except (FileNotFoundError, json.JSONDecodeError):
+        except FileNotFoundError, json.JSONDecodeError:
             with open("data.json", "w") as file:
                 store_dict = {}
                 json.dump(store_dict, file, indent=4)

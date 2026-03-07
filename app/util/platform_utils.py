@@ -1,8 +1,11 @@
 import os
 import sys
 
+
 def get_platform():
+
     return sys.platform
+
 
 def clear():
     platform = get_platform()

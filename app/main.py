@@ -7,6 +7,7 @@ from app.models.task_item import TaskItem
 from app.store.task_store import TaskStore
 from app.util.platform_utils import clear
 
+
 def start():
     store = TaskStore()
     display_startup()
@@ -24,7 +25,9 @@ def start():
                 priority = Priority.MEDIUM
 
                 while priority_selected not in Priority:
-                    priority_selected = input("Enter task priority(low, medium, high): ")
+                    priority_selected = input(
+                        "Enter task priority(low, medium, high): "
+                    )
                     match priority_selected:
                         case "low":
                             priority = Priority.LOW
@@ -36,10 +39,12 @@ def start():
                 while True:
                     try:
                         date_selected = input("Enter task date(YYYY-MM-DD): ")
-                        due_date = datetime.datetime.strptime(date_selected, "%Y-%m-%d").date()
+                        due_date = datetime.datetime.strptime(
+                            date_selected, "%Y-%m-%d"
+                        ).date()
                         break
                     except ValueError:
-                        print("Invalid date. Try again.")\
+                        print("Invalid date. Try again.")
 
                 completed = False
                 task = TaskItem(name, description, completed, priority, due_date)
