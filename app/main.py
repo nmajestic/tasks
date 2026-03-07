@@ -22,35 +22,7 @@ def start():
         clear()
         match action_selected:
             case "a":
-                name = input("Enter task name: ")
-                description = input("Enter task description: ")
-                priority_selected = ""
-                priority = Priority.MEDIUM
-
-                while priority_selected not in Priority:
-                    priority_selected = input(
-                        "Enter task priority(low, medium, high): "
-                    )
-                    match priority_selected:
-                        case "low":
-                            priority = Priority.LOW
-                        case "medium":
-                            priority = Priority.MEDIUM
-                        case "high":
-                            priority = Priority.HIGH
-
-                while True:
-                    try:
-                        date_selected = input("Enter task date(YYYY-MM-DD): ")
-                        due_date = datetime.datetime.strptime(
-                            date_selected, "%Y-%m-%d"
-                        ).date()
-                        break
-                    except ValueError:
-                        print("Invalid date. Try again.")
-
-                completed = False
-                task = TaskItem(name, description, completed, priority, due_date)
+                task = get_task_data()
                 store.add_task(task)
                 clear()
             case "d":
@@ -69,3 +41,33 @@ def start():
                 store.save()
             case "q":
                 sys.exit(0)
+
+
+def get_task_data():
+    """Get task data from the user input."""
+    name = input("Enter task name: ")
+    description = input("Enter task description: ")
+    priority_selected = ""
+    priority = Priority.MEDIUM
+
+    while priority_selected not in Priority:
+        priority_selected = input("Enter task priority(low, medium, high): ")
+        match priority_selected:
+            case "low":
+                priority = Priority.LOW
+            case "medium":
+                priority = Priority.MEDIUM
+            case "high":
+                priority = Priority.HIGH
+
+    while True:
+        try:
+            date_selected = input("Enter task date(YYYY-MM-DD): ")
+            due_date = datetime.datetime.strptime(date_selected, "%Y-%m-%d").date()
+            break
+        except ValueError:
+            print("Invalid date. Try again.")
+
+    completed = False
+    task = TaskItem(name, description, completed, priority, due_date)
+    return task
