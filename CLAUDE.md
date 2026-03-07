@@ -20,7 +20,21 @@ uv run python main.py
 uv add <package>
 ```
 
-There are no tests or linting configured in this project.
+**Run tests:**
+```bash
+uv run pytest
+```
+
+**Lint:**
+```bash
+uv run pylint app/
+uv run flake8 app/
+```
+
+**Format:**
+```bash
+uv run black app/
+```
 
 ## Architecture
 
@@ -28,7 +42,7 @@ This is a CLI task manager app. The entry point is `main.py`, which calls `app/m
 
 **Key modules:**
 
-- `app/main.py` — Main event loop handling user input (`a`/`d`/`c`/`l`/`g`/`s`/`q` commands)
+- `app/main.py` — Main event loop handling user input (`a`/`d`/`c`/`l`/`g`/`s`/`q` commands); also contains `get_priority()` and `get_due_date()` helpers
 - `app/store/task_store.py` — `TaskStore` class: in-memory task list with JSON persistence to `data.json` (saved/loaded in the current working directory)
 - `app/models/task_item.py` — `TaskItem` dataclass: `name`, `description`, `completed`, `priority`, `due_date`
 - `app/models/priority.py` — `Priority` StrEnum (`low`/`medium`/`high`) with ordering support
