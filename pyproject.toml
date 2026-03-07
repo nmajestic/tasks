@@ -8,7 +8,11 @@ dependencies = [
     "flake8>=7.3.0",
     "flake8-pyproject>=1.2.4",
     "pylint>=4.0.5",
+    "pytest>=9.0.2",
 ]
+
+[tool.pylint.master]
+ignore = ["app/tests"]
 
 [tool.flake8]
 max-line-length = 120

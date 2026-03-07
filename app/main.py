@@ -22,7 +22,21 @@ def start():
         clear()
         match action_selected:
             case "a":
-                task = get_task_data()
+                name = input("Enter task name: ")
+                description = input("Enter task description: ")
+                priority = get_priority(input("Enter priority: "))
+                completed = False
+
+                while True:
+                    date_selected = input("Enter task date(YYYY-MM-DD): ")
+
+                    try:
+                        due_date = get_due_date(date_selected)
+                        break
+                    except ValueError:
+                        print("Invalid date")
+
+                task = TaskItem(name, description, completed, priority, due_date)
                 store.add_task(task)
                 clear()
             case "d":
@@ -43,31 +57,19 @@ def start():
                 sys.exit(0)
 
 
-def get_task_data():
-    """Get task data from the user input."""
-    name = input("Enter task name: ")
-    description = input("Enter task description: ")
-    priority_selected = ""
-    priority = Priority.MEDIUM
+def get_priority(priority_selected):
+    """Get the priority of the task."""
+    match priority_selected:
+        case "low":
+            return Priority.LOW
+        case "medium":
+            return Priority.MEDIUM
+        case "high":
+            return Priority.HIGH
+    raise ValueError("Invalid priority")
 
-    while priority_selected not in Priority:
-        priority_selected = input("Enter task priority(low, medium, high): ")
-        match priority_selected:
-            case "low":
-                priority = Priority.LOW
-            case "medium":
-                priority = Priority.MEDIUM
-            case "high":
-                priority = Priority.HIGH
 
-    while True:
-        try:
-            date_selected = input("Enter task date(YYYY-MM-DD): ")
-            due_date = datetime.datetime.strptime(date_selected, "%Y-%m-%d").date()
-            break
-        except ValueError:
-            print("Invalid date. Try again.")
-
-    completed = False
-    task = TaskItem(name, description, completed, priority, due_date)
-    return task
+def get_due_date(date_selected):
+    """Get due date and parse it."""
+    due_date = datetime.datetime.strptime(date_selected, "%Y-%m-%d").date()
+    return due_date
