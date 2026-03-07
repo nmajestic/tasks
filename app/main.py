@@ -1,3 +1,5 @@
+"""Main entry point for the Tasks CLI application."""
+
 import datetime
 import sys
 
@@ -9,6 +11,7 @@ from app.util.platform_utils import clear
 
 
 def start():
+    """Run the main task manager loop."""
     store = TaskStore()
     display_startup()
 
