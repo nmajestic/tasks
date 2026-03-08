@@ -1,6 +1,8 @@
 """Tests for the TaskStore class."""
 
 import datetime
+import json
+from unittest.mock import patch, mock_open
 
 import pytest
 
@@ -72,3 +74,31 @@ def test_clear_tasks(task, store):
     store.add_task(task)
     store.clear_tasks()
     assert store.get_tasks() == []
+
+
+def test_load(store):
+    fake_data = json.dumps(
+        {
+            "Test Task": {
+                "name": "Test Task",
+                "description": "This is just a test task",
+                "completed": False,
+                "priority": "medium",
+                "due_date": "2026-04-01",
+            }
+        }
+    )
+
+    with patch("builtins.open", mock_open(read_data=fake_data)):
+        store.load()
+
+        assert len(store.get_tasks()) == 1
+
+
+def test_save(store, task):
+    store.add_task(task)
+
+    with patch("builtins.open", mock_open()):
+        with patch("json.dump") as mocked_dump:
+            store.save()
+            mocked_dump.assert_called_once()
